@@ -24,16 +24,17 @@ QT_BEGIN_NAMESPACE
 // namespace Ui { class MainWindow; } // 不再使用UI设计文件，注释掉这部分
 QT_END_NAMESPACE
 
+
 // 线程类用于采集帧
 class FrameCaptureThread : public QThread {
     Q_OBJECT
 public:
     FrameCaptureThread(QMutex *mutex, QQueue<cv::Mat> *frameQueue, cv::VideoCapture *cap, QObject *parent = nullptr);
-    ~FrameCaptureThread();
+    ~FrameCaptureThread() override;
 
     void run() override;  // 添加 run 函数的声明
 private slots:
-            void captureFrame();
+    void captureFrame();
 private:
     QMutex *mutex;
     QQueue<cv::Mat> *frameQueue;
@@ -46,7 +47,7 @@ class FrameFilterThread : public QThread {
     Q_OBJECT
 public:
     FrameFilterThread(QMutex *mutex, QQueue<cv::Mat> *inputQueue, QQueue<cv::Mat> *outputQueue, QObject *parent = nullptr);
-    ~FrameFilterThread();
+    virtual ~FrameFilterThread();
     void run() override;
 private:
     QMutex *mutex;
@@ -59,7 +60,7 @@ class FrameRenderThread : public QThread {
     Q_OBJECT
 public:
     FrameRenderThread(QMutex *mutex, QQueue<cv::Mat> *frameQueue, QWidget *renderWidget, QObject *parent = nullptr);
-    ~FrameRenderThread();
+    virtual ~FrameRenderThread();
     void run() override;
 private:
     QMutex *mutex;
@@ -72,6 +73,7 @@ class CameraWidget : public QWidget {
     Q_OBJECT
 public:
     CameraWidget(QWidget *parent = nullptr);
+    virtual ~CameraWidget();
     void setFrame(const cv::Mat& frame);
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -84,7 +86,7 @@ class MainWindow : public QMainWindow {
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
 private slots:
             void openCamera();

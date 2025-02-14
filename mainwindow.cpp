@@ -3,9 +3,9 @@
 //
 
 #include "mainwindow.h"
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+//#include <opencv2/core/core.hpp>
+//#include <opencv2/highgui/highgui.hpp>
+//#include <opencv2/imgproc/imgproc.hpp>
 
 FrameCaptureThread::FrameCaptureThread(QMutex *mutex, QQueue<cv::Mat> *frameQueue, cv::VideoCapture *cap, QObject *parent)
         : QThread(parent), mutex(mutex), frameQueue(frameQueue), cap(cap) {
@@ -150,7 +150,7 @@ void MainWindow::openCamera() {
             renderThread->start();
             openButton->setText("Close");
         } else {
-            qDebug() << "无法打开摄像头";
+//            qDebug() << "无法打开摄像头";
         }
     } else {
         captureThread->quit();
