@@ -1,18 +1,23 @@
 # 指定CMake最低版本要求
 cmake_minimum_required(VERSION 3.10)
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
 # 设置项目名称
 project(qt_opencv_camera_app)
 
 # 设置C++标准
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 查找Qt5组件
 
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64" AND APPLE)
 # 执行 shell 命令获取 Qt 安装路径, 因为要区分86和arm64架构
 execute_process(
-        COMMAND /opt/homebrew/bin/brew --prefix qt
+        COMMAND /opt/homebrew/bin/brew --prefix qt@5
         OUTPUT_VARIABLE QT_DIR
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
@@ -20,7 +25,7 @@ execute_process(
 set(CMAKE_PREFIX_PATH ${QT_DIR})
 endif() # 结束 CMAKE_SYSTEM_PROCESSOR 语句
 
-find_package(Qt6 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 
 # 添加 OpenCV 子模块作为子项目
@@ -64,6 +69,13 @@ add_subdirectory(external/ncnn)
 set(SOURCES
         main.cpp
         mainwindow.cpp
+        CameraWidget.cpp
+        CameraWidget.h
+        FrameCaptureThread.cpp
+        FrameCaptureThread.h
+        FrameRenderThread.cpp
+        FrameRenderThread.h
+        FrameFilterThread.cpp
 )
 
 # 添加可执行文件
@@ -97,7 +109,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE external/ncnn/src)
 
 # 链接Qt5库
-target_link_libraries(${PROJECT_NAME} Qt6::Widgets)
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
 
@@ -106,5 +118,4 @@ target_link_libraries(${PROJECT_NAME} opencv_core opencv_imgproc opencv_highgui)
 
 # 链接 ncnn 库
 target_link_libraries(${PROJECT_NAME} ncnn)
-
 

@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external/ncnn" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external/ncnn/glslang" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external/ncnn/python/pybind11" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external/opencv" vcs="Git" />
   </component>
 </project>
