@@ -50,6 +50,8 @@ void startVirtualCamera();
         filterThread->enableSuperResolution(checked);
     }
 
+    void onResolutionChanged(int index);
+
 
 private:
     // Ui::MainWindow *ui; // 不再使用UI设计文件，注释掉这部分

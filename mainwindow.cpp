@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     resolutionComboBox = new QComboBox(this);
     resolutionComboBox->addItems({"640x360", "1280x720", "1920x1080"});
+    connect(resolutionComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onResolutionChanged);
 
     filterThread = new FrameFilterThread(&frameMutex, &captureFrameQueue, &filteredFrameQueue, this);
     filterThread->enableSuperResolution(srCheckBox->isChecked());
@@ -104,6 +105,7 @@ void MainWindow::captureFrame() {
     cv::Mat frame;
     cap >> frame;
     if (!frame.empty()) {
+        cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
         frameMutex.lock();
         captureFrameQueue.enqueue(frame);
         frameMutex.unlock();
@@ -203,4 +205,14 @@ void MainWindow::handleCameraError(const QString& error) {
     if (cap.isOpened()) {
         cap.release();
     }
+}
+
+void MainWindow::onResolutionChanged(int index) {
+    if (cap.isOpened()) {
+        // 如果摄像头已经打开，需要重启摄像头应用新分辨率
+        stopCamera();
+        openCamera();
+    }
+    // 更新状态显示
+    statusLabel->setText(QString("已选择分辨率：%1").arg(resolutionComboBox->currentText()));
 }
