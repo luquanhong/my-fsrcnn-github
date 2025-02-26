@@ -18,10 +18,18 @@ public:
     FrameFilterThread(QMutex *mutex, QQueue<cv::Mat> *inputQueue, QQueue<cv::Mat> *outputQueue, QObject *parent = nullptr);
     virtual ~FrameFilterThread();
     void run() override;
+
+    virtual void start();
+    void stop();
+    bool isRunning() { return running;}
+    void enableSuperResolution(bool enable) { isSurperResolution = enable; }
 private:
     QMutex *mutex;
     QQueue<cv::Mat> *inputQueue;
     QQueue<cv::Mat> *outputQueue;
+
+    bool isSurperResolution; // 是否开启超分辨率
+    bool running; // 新增的运行标志
 };
 
 

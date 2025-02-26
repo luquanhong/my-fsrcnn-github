@@ -20,22 +20,13 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-#include "FrameCaptureThread.h"
 #include "FrameFilterThread.h"
 #include "FrameRenderThread.h"
 #include "CameraWidget.h"
 
-
 QT_BEGIN_NAMESPACE
 // namespace Ui { class MainWindow; } // 不再使用UI设计文件，注释掉这部分
 QT_END_NAMESPACE
-
-
-
-
-
-
-
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -46,6 +37,13 @@ public:
 
 private slots:
     void openCamera();
+    void captureFrame();
+    void updateCameraList();  // 新增槽函数，用于更新摄像头列表
+
+    void onToggled(bool checked) {
+        filterThread->enableSuperResolution(checked);
+    }
+
 
 private:
     // Ui::MainWindow *ui; // 不再使用UI设计文件，注释掉这部分
@@ -53,13 +51,17 @@ private:
     QMutex frameMutex;
     QQueue<cv::Mat> captureFrameQueue;
     QQueue<cv::Mat> filteredFrameQueue;
-    FrameCaptureThread *captureThread;
     FrameFilterThread *filterThread;
     FrameRenderThread *renderThread;
     CameraWidget *cameraWidget;
     QPushButton *openButton;
     QCheckBox *srCheckBox;
     QComboBox *resolutionComboBox;
+    QComboBox *cameraComboBox;  // 新增摄像头选择下拉框
+
+    QTimer captureTimer;
+
+    int mSuperResolutionEnable{0};
 };
 
 

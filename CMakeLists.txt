@@ -71,11 +71,10 @@ set(SOURCES
         mainwindow.cpp
         CameraWidget.cpp
         CameraWidget.h
-        FrameCaptureThread.cpp
-        FrameCaptureThread.h
         FrameRenderThread.cpp
         FrameRenderThread.h
         FrameFilterThread.cpp
+        FrameFilterThread.h
 )
 
 # 添加可执行文件
