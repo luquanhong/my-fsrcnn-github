@@ -19,6 +19,7 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QLabel>
 
 #include "FrameFilterThread.h"
 #include "FrameRenderThread.h"
@@ -39,6 +40,11 @@ private slots:
     void openCamera();
     void captureFrame();
     void updateCameraList();  // 新增槽函数，用于更新摄像头列表
+    void stopCamera();
+void startVirtualCamera();
+    void onCameraSelected(int index);
+    void handleCameraError(const QString& error);
+    void applyResolution();
 
     void onToggled(bool checked) {
         filterThread->enableSuperResolution(checked);
@@ -48,6 +54,8 @@ private slots:
 private:
     // Ui::MainWindow *ui; // 不再使用UI设计文件，注释掉这部分
     cv::VideoCapture cap;
+    QSize currentResolution; // 添加当前分辨率跟踪
+
     QMutex frameMutex;
     QQueue<cv::Mat> captureFrameQueue;
     QQueue<cv::Mat> filteredFrameQueue;
@@ -59,6 +67,7 @@ private:
     QComboBox *resolutionComboBox;
     QComboBox *cameraComboBox;  // 新增摄像头选择下拉框
 
+    QLabel *statusLabel;
     QTimer captureTimer;
 
     int mSuperResolutionEnable{0};

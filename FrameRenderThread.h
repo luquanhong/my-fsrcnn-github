@@ -21,12 +21,14 @@ public:
 
     virtual void start();
     void stop();
+
+    bool isRunning() { return running;}
 private:
     QMutex *mutex;
     QQueue<cv::Mat> *frameQueue;
     QWidget *renderWidget;
 
-    bool isRunning; // 新增的运行标志
+    bool running; // 新增的运行标志
 };
 
 

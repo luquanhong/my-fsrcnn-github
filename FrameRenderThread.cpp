@@ -6,12 +6,12 @@
 #include "CameraWidget.h"
 
 FrameRenderThread::FrameRenderThread(QMutex *mutex, QQueue<cv::Mat> *frameQueue, QWidget *renderWidget, QObject *parent)
-        : QThread(parent), mutex(mutex), frameQueue(frameQueue), renderWidget(renderWidget), isRunning(true)  {}
+        : QThread(parent), mutex(mutex), frameQueue(frameQueue), renderWidget(renderWidget), running(true)  {}
 
 FrameRenderThread::~FrameRenderThread() {}
 
 void FrameRenderThread::run() {
-    while (isRunning) {
+    while (running) {
         cv::Mat frame;
         mutex->lock();
         if (!frameQueue->isEmpty()) {
@@ -29,10 +29,10 @@ void FrameRenderThread::run() {
 }
 
 void FrameRenderThread::stop() {
-    isRunning = false;
+    running = false;
 }
 
 void FrameRenderThread::start() {
     QThread::start();
-    isRunning = true;
+    running = true;
 }
