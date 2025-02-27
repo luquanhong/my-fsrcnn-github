@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
     cameraWidget = new CameraWidget(this);
-    mainLayout->addWidget(cameraWidget);
+    mainLayout->addWidget(cameraWidget, 1);
 
     cameraComboBox = new QComboBox(this);
     updateCameraList();  // 初始化时更新摄像头列表
@@ -48,7 +48,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     mainLayout->addLayout(controlsLayout);
     setCentralWidget(centralWidget);
-    setMinimumSize(640, 480);
+    setMinimumSize(1300, 800);
+//    mainLayout->setStretch(0, 1);  // CameraWidget 占1份（全部空间）
+//    mainLayout->setStretch(1, 0);  // 控制栏保持固定高度
+
     setWindowTitle("智能摄像头查看器 - V2.0");
 }
 
@@ -153,8 +156,8 @@ void MainWindow::applyResolution() {
             currentResolution = QSize(actualWidth, actualHeight);
 
             // 调整窗口大小（保留控件区域空间）
-            const int controlHeight = 80; // 根据实际控件高度调整
-            resize(actualWidth, actualHeight + controlHeight);
+//            const int controlHeight = 80; // 根据实际控件高度调整
+//            resize(actualWidth, actualHeight + controlHeight);
 
             // 更新状态显示
             statusLabel->setText(QString("运行中 - %1x%2").arg(actualWidth).arg(actualHeight));

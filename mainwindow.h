@@ -72,6 +72,8 @@ private:
     QLabel *statusLabel;
     QTimer captureTimer;
 
+
+
     int mSuperResolutionEnable{0};
 };
 

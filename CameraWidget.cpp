@@ -32,6 +32,13 @@ void CameraWidget::paintEvent(QPaintEvent *event) {
                   displayFrame.cols, displayFrame.rows,
                   displayFrame.cols * displayFrame.channels(),
                   QImage::Format_RGB888);
+
+    // 保持宽高比缩放
+    QRect targetRect = qImage.rect();
+    targetRect.setSize(qImage.size().scaled(this->size(), Qt::KeepAspectRatioByExpanding));
+    targetRect.moveCenter(rect().center());
+
     QPainter painter(this);
-    painter.drawImage(QPoint(0, 0), qImage);
+    painter.drawImage(targetRect, qImage, qImage.rect());
+//    painter.drawImage(QPoint(0, 0), qImage);
 }
